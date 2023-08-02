@@ -1,0 +1,28 @@
+<h1>Image generator</h1>
+
+<form action="/" method="post">
+    <input
+            type="text"
+            class="form-control mb-2"
+            placeholder="Enter image description"
+            required
+            name="prompt"
+            value="{{prompt}}"
+    />
+    <select name="size" class="form-control mb-2">
+        {{#each sizes}}
+            <option value="{{ this.value }}" {{#if this.selected}}selected{{/if}}>{{ this.title }}</option>
+        {{/each}}
+    </select>
+    <input type="number" class="form-control mb-2" name="number" value="{{#if number}}{{number}}{{else}}1{{/if}}" />
+
+    <button type="submit" class="btn btn-primary">Generate</button>
+</form>
+
+{{#if images}}
+    <div class="row">
+        {{#each images}}
+            <img src="{{ this.url }}" alt="" class="img-fluid rounded">
+        {{/each}}
+    </div>
+{{/if}}
