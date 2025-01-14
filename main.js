@@ -1,13 +1,11 @@
 import express from 'express'
-import config from 'config'
 import { engine } from "express-handlebars"
-import { Configuration, OpenAIApi } from 'openai'
+import OpenAI from "openai";
+import dotenv from 'dotenv';
 
-const configuration = new Configuration({
-    apiKey: config.get('OPENAI_API_KEY'),
-});
-const openai = new OpenAIApi(configuration);
+dotenv.config();
 
+const openai = new OpenAI();
 const app = express()
 
 app.engine('handlebars', engine())
@@ -18,9 +16,9 @@ app.use(express.urlencoded({ extended: true }))
 
 let viewData = {
     sizes: [
-        {value : '256x256', title: 'Small', selected: false},
-        {value : '512x512', title: 'Medium', selected: false},
-        {value : '1024x1024', title: 'Large', selected: false}
+        { value: '1024x1024', title: '1024x1024', selected: false},
+        { value: '1024x1792', title: '1024x1792', selected: false},
+        { value: '1792x1024', title: '1792x1024', selected: false}
     ]
 }
 
@@ -43,20 +41,22 @@ app.post('/', async (req, res) => {
     })
 
     try {
-        const response = await openai.createImage({
+        const response = await openai.images.generate({
             prompt,
             size,
             n: Number(number)
         })
 
-        console.log(response.data.data)
+        console.log(response.data)
 
-        viewData.images = response.data.data
+        viewData.images = response.data
         res.render('index', viewData)
     } catch (e) {
+        console.log(e)
+
         viewData.error = e.message
         res.render('index', viewData)
     }
 })
 
-app.listen(3000, () => console.log("Server started ..."))
+app.listen(process.env.PORT, () => console.log(`Server started on port ${process.env.PORT}: http://localhost:${process.env.PORT}`))
