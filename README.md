@@ -6,7 +6,7 @@
 3. Make sure you have a minimum credit balance on [Billing page](https://platform.openai.com/settings/organization/billing/overview)
 
 ## Interface
-[interface.jpg](/interface.jpg)
+![interface.jpg](/interface.jpg)
 
 ## Links
 [Image generation with DALL·E](https://platform.openai.com/docs/guides/images)
